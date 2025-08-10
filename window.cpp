@@ -1,13 +1,16 @@
-#include "window.hpp"
+// window.cpp
+#include "window.h"
+#include "logic.h"
 #include <iostream>
-
-const int WINDOW_WIDTH = 800;
-const int WINDOW_HEIGHT = 600;
 
 SDL_Window* window = nullptr;
 SDL_Renderer* renderer = nullptr;
 
+//===============================================
+//  This functions initialises the window
+//===============================================
 bool initWindow(const char* title) {
+
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         std::cerr << "SDL_Init Error: " << SDL_GetError() << "\n";
         return false;
@@ -39,6 +42,9 @@ bool initWindow(const char* title) {
     return true;
 }
 
+//===============================================
+//  This functions cleans the window by destroying it
+//===============================================
 void cleanupWindow() {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
@@ -57,31 +63,19 @@ void drawSquare(int x, int y) {
 //===============================================
 //  This function runs the main logic of the window
 //
-//  In other words it draws the entire window
+//  In other words it draws the entire world
 //===============================================
-void windowLogic() {
-    bool running = true;
-    SDL_Event event;
-    int temp1 = 0;
-    int temp2 = 0;
+void windowLogic( int world[WINDOW_WIDTH][WINDOW_HEIGHT] ) {
 
-    while (running) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT)
-                running = false;
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Clear with black
+    SDL_RenderClear(renderer);
+
+    for ( int i = 0 ; i <= WINDOW_WIDTH ; i++ ) {
+        for ( int j = 0 ; j <= WINDOW_HEIGHT ; j++ ) {
+            drawSquare( i * world[i][j], j * world[i][j]  );
         }
-
-        if (temp1 >= WINDOW_WIDTH / 10) temp1 = 0;
-        if (temp2 >= WINDOW_HEIGHT / 10) temp2 = 0;
-
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Clear with black
-        SDL_RenderClear(renderer);
-
-        drawSquare(temp1, temp2);
-        SDL_RenderPresent(renderer);
-
-        SDL_Delay(200);
-        temp1++;
-        temp2++;
     }
+    
+    SDL_RenderPresent(renderer);
+
 }

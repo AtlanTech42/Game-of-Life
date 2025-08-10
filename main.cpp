@@ -1,14 +1,35 @@
 #include <iostream>
-#include "window.hpp"
+#include "window.h"
+#include "logic.h"
 
 int main(int argc, char* argv[]) {
+    // Create the window
+    
     if (!initWindow("Simulation Window")) {
         std::cerr << "Failed to initialize window\n";
         return 1;
     }
 
-    windowLogic();
+    // Create the world
+    int world[WINDOW_WIDTH][WINDOW_HEIGHT];
 
+    bool running = true;
+    SDL_Event event;
+    while (running) {
+
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT)
+                running = false;
+        }
+
+        worldUpdate(world);
+
+        windowLogic(world);
+
+        SDL_Delay(200);
+    }
+
+    // Destroy the window
     cleanupWindow();
 
     return 0;
