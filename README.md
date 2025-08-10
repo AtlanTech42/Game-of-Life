@@ -4,3 +4,12 @@ Any live cell with fewer than two live neighbours dies, as if by underpopulation
 Any live cell with two or three live neighbours lives on to the next generation.
 Any live cell with more than three live neighbours dies, as if by overpopulation.
 Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+
+
+To use it just run the main, then select the squares you what to turn alive, then press enter and the simulation will run
+
+Todo:
+- Add a reset option
+- Add examples option
+- make screen size modifiable
+- ...

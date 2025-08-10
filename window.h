@@ -13,6 +13,8 @@ extern SDL_Renderer* renderer;
 bool initWindow( const char* title );
 void cleanupWindow();
 void drawSquare( int x, int y );
-void windowLogic( int world[WINDOW_WIDTH][WINDOW_HEIGHT] );
+void windowLogic( int world[COLS][ROWS] );
+void handleStartInput(SDL_Event& e);
+void drawStartScreen();
 
 #endif
