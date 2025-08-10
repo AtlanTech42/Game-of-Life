@@ -1,21 +1,21 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Build and Run SDL2",
-            "type": "shell",
-            "command": "g++ -g ${file} -o ${fileDirname}/${fileBasenameNoExtension} `sdl2-config --cflags --libs` && ${fileDirname}/${fileBasenameNoExtension}",
-            "options": {
-                "cwd": "${fileDirname}"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "detail": "Build and run SDL2 app"
-        }
-    ]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build and Run SDL2 (all files)",
+      "type": "shell",
+      "command": "g++ -g ${workspaceFolder}/*.cpp -o ${workspaceFolder}/main `sdl2-config --cflags --libs` && ${workspaceFolder}/main",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "detail": "Build and run SDL2 app (all .cpp files)"
+    }
+  ]
 }
