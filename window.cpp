@@ -53,10 +53,13 @@ void cleanupWindow() {
 
 //===============================================
 //  This functions draws a square in the coords
+//
+//  x and y, and if the cell is alive or not
+//  (alive = 1, dead = 0)
 //===============================================
-void drawSquare(int x, int y) {
+void drawSquare(int x, int y, int alive) {
     SDL_Rect rect = { x * 10, y * 10, 10, 10 };
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_SetRenderDrawColor(renderer, 255 * alive, 255 * alive, 255 * alive, 255);
     SDL_RenderFillRect(renderer, &rect);
 }
 
@@ -70,9 +73,9 @@ void windowLogic( int world[WINDOW_WIDTH][WINDOW_HEIGHT] ) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Clear with black
     SDL_RenderClear(renderer);
 
-    for ( int i = 0 ; i <= WINDOW_WIDTH ; i++ ) {
-        for ( int j = 0 ; j <= WINDOW_HEIGHT ; j++ ) {
-            drawSquare( i * world[i][j], j * world[i][j]  );
+    for ( int i = 0 ; i <= WINDOW_WIDTH / pixelSize ; i++ ) {
+        for ( int j = 0 ; j <= WINDOW_HEIGHT / pixelSize ; j++ ) {
+            drawSquare( i * world[i][j], j * world[i][j], world[i][j] );
         }
     }
     

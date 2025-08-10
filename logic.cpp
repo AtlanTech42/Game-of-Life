@@ -6,25 +6,60 @@ using namespace std;
 int timer = 0;
 
 //===============================================
+//  This function counts the number of alive cells around a cell
+//===============================================
+int aroundCount(int x, int y, int world[WINDOW_WIDTH][WINDOW_HEIGHT]) {
+    int count = 0;
+    for (int i = -1; i <= 1; ++i) {
+        for (int j = -1; j <= 1; ++j) {
+            if (i == 0 && j == 0) continue; // Skip the cell itself
+            int newX = x + i;
+            int newY = y + j;
+            if (newX >= 0 && newX < WINDOW_WIDTH && newY >= 0 && newY < WINDOW_HEIGHT) {
+                count += world[newX][newY];
+            }
+        }
+    }
+    return count;
+}
+
+//===============================================
 //  This function figures out the logic to update the world
 //===============================================
 void worldUpdate ( int world[WINDOW_WIDTH][WINDOW_HEIGHT] ) {
 
+    // Create the world copy
+    int worldCopy[WINDOW_WIDTH][WINDOW_HEIGHT];
+
     for ( int i = 0 ; i <= (WINDOW_WIDTH / pixelSize) - 1 ; i++ ) {
         for ( int j = 0 ; j <= (WINDOW_HEIGHT / pixelSize) - 1 ; j++ ) {
-            if ( timer == 1 ) {
-                world[i][j] = (i%2) * (j%2);
-            }else {
-                world[i][j] = (i%3) * (j%3);
+            if ( world[i][j] == 1 ) {
+                // If the cell is alive, check the number of alive neighbors
+                int count = aroundCount(i, j, world);
+                
+                // Apply the rules of life
+                if (count < 2 || count > 3) {
+                    worldCopy[i][j] = 0; // Cell dies
+                } else {
+                    worldCopy[i][j] = 1; // Cell stays alive
+                }
+            } else {
+                // If the cell is dead, check if it can come to life
+                int count = aroundCount(i, j, world);
+                if (count == 3) {
+                    worldCopy[i][j] = 1; // Cell becomes alive
+                } else {
+                    worldCopy[i][j] = 0; // Cell stays dead
+                }
             }
-            
         }
     }
-
-    if ( timer == 1 ) {
-        timer = 0;
-    } else {
-        timer = 1;
+    
+    // Update the world based on the rules
+    for ( int i = 0 ; i <= (WINDOW_WIDTH / pixelSize) - 1 ; i++ ) {
+        for ( int j = 0 ; j <= (WINDOW_HEIGHT / pixelSize) - 1 ; j++ ) {
+            world[i][j] = worldCopy[i][j];
+        }
     }
-
+    
 }
